@@ -82,4 +82,7 @@ plt.scatter(x_plot_0_test_ovr, y_plot_0_test_ovr + 0.02, color = 'red', marker =
 plt.scatter(x_plot_1_test_ovr, y_plot_1_test_ovr + 0.02, color = 'blue', marker = '^')
 plt.scatter(x_plot_2_test_ovr, y_plot_2_test_ovr + 0.02, color = 'green', marker = '^')
 plt.legend()
+plt.xlabel("petal length")
+plt.ylabel("petal heigth")
 plt.show()
+plt.savefig("petal_classified.png")
