@@ -35,21 +35,48 @@ def find_min(foo, x0, gamma = 1., err = 0.00000001, max_iter = 500):
         print("the minimum is at {}".format(x))
     return x
 
+def vanilla(foo, x0, gamma = 1., err = 0.00000001, max_iter = 500):
+    """
+    find minimum by vanilla gradient descent
+    x0 = [x,y] start position vector
+    """
+    x = x0
+    converged = False
+    steps = max_iter
+    for i in range(max_iter):
+        grad = nd.Gradient(foo)(x)
+        x = x - gamma * grad
+        grad = nd.Gradient(foo)(x)
+        # if the gradient is small enough in every direction, break
+        if (np.abs(grad[0]) < err) & (np.abs(grad[1]) < err):
+            converged = True
+            steps = i
+            break
+    if converged:
+        print("vanilla gradient descent converged after {} steps".format(steps))
+        print("the minimum is at {}".format(x))
+    else:
+        print("vanilla gradient descent did not converge after {} steps".format(steps))
+    return x
+
+
+
+
 print(find_min(banana, [2,2]))
+print("--------------------")
+print("comparing to vanilla gradient descent:")
 
-# plot 3d function
+print(vanilla(banana, [2,0.0002]))
 
-# fig = plt.figure()
-# ax = fig.add_subplot(111, projection='3d')
-# x = y = np.arange(-5.0, 5.0, 0.05)
-# X, Y = np.meshgrid(x, y)
-# zs = np.array([banana(x,y) for x,y in zip(np.ravel(X), np.ravel(Y))])
-# Z = zs.reshape(X.shape)
+# For the banana function vanilla gradient descent does not converge
+# to the correct minimum, but apparently at that point grad == 0.
 
-# ax.plot_surface(X, Y, Z)
-
-# ax.set_xlabel('X Label')
-# ax.set_ylabel('Y Label')
-# ax.set_zlabel('Z Label')
-
-# plt.show()
+# OUTPUT
+# find_min converged after 5 steps
+# the minimum is at [ 1.75047961e-20 -2.18800833e-16]
+# [ 1.75047961e-20 -2.18800833e-16]
+# --------------------
+# comparing to vanilla gradient descent:
+# vanilla gradient descent converged after 2 steps
+# the minimum is at [-7.57660805e+32  1.64786768e+07]
+# [-7.57660805e+32  1.64786768e+07]
